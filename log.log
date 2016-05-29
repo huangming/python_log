@@ -1,0 +1,9 @@
+[1;32m[2016-05-29 22:17:38] log.py line:217 INFO    debughaha[1;0m
+[1;31m[2016-05-29 22:17:38] log.py line:218 ERROR   (1, 2)[1;0m
+[1;31m[2016-05-29 22:17:38] log.py line:219 ERROR   debug[1;0m
+[1;32m[2016-05-29 22:17:38] log.py line:220 INFO    {'b': 2, 'a': 1}[1;0m
+[1;32m[2016-05-29 22:17:53] log.py line:226 INFO    test a[1;0m
+[1;32m[2016-05-29 22:17:53] log.py line:231 INFO    5[1;0m
+[1;31m[2016-05-29 22:17:53] log.py line:209 ERROR   log.py line:240 in <module>:a = fun(0)[1;0m
+[1;31m[2016-05-29 22:17:53] log.py line:209 ERROR   log.py line:238 in fun:return 10/a[1;0m
+[1;31m[2016-05-29 22:17:53] log.py line:210 ERROR   <class 'ZeroDivisionError'>: division by zero[1;0m
