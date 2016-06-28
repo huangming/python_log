@@ -159,10 +159,7 @@ class Log():
             self.filehandler = logging.handlers.TimedRotatingFileHandler(self.filename,
                     self.when, 1, self.backup_count)
         self.filehandler.setLevel(self.filelevel)
-        if self.colorful:
-            formatter = ColoredFormatter(self.filefmt, self.filedatefmt)
-        else:
-            formatter = logging.Formatter(self.filefmt, self.filedatefmt,)
+        formatter = logging.Formatter(self.filefmt, self.filedatefmt,)
         self.filehandler.setFormatter(formatter)
         self.logger.addHandler(self.filehandler)
  
