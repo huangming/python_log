@@ -88,7 +88,7 @@ class ColoredFormatter(logging.Formatter):
         return LOG_COLORS.get(level_name, '%s') % msg
 
 class Log():
-    def __init__(self, filename = None, mode = 'a',
+    def __init__(self, loggername='', filename = None, mode = 'a',
             cmdlevel='DEBUG',
             filelevel='INFO',
             cmdfmt = '[%(asctime)s] %(filename)s line:%(lineno)d %(levelname)-8s%(message)s',
@@ -97,10 +97,13 @@ class Log():
             filedatefmt = '%Y-%m-%d %H:%M:%S',
             backup_count = 0, limit = 20480, when = None, colorful = False):
         self.filename = filename
+        self.loggername = loggername
         if self.filename is None:
             self.filename = getattr(sys.modules['__main__'], '__file__', 'log.py')
             self.filename = os.path.basename(self.filename.replace('.py', '.log'))
             #self.filename = os.path.join('/tmp', self.filename)
+        if not os.path.exists(os.path.abspath(os.path.dirname(self.filename))):
+            os.makedirs(os.path.abspath(os.path.dirname(self.filename)))
         self.mode = mode
         self.cmdlevel = cmdlevel
         self.filelevel = filelevel
@@ -128,7 +131,7 @@ class Log():
     def init_logger(self):
         '''Reload the logger.'''
         if self.logger is None:
-            self.logger = logging.getLogger()
+            self.logger = logging.getLogger(self.loggername)
         else:
             logging.shutdown()
             self.logger.handlers = []
@@ -192,6 +195,10 @@ class Log():
         self.import_log_funcs()
         return True
 
+    def addFileLog(self,log):
+        self.logger.addHandler(log.filehandler)
+        return self
+
     def import_log_funcs(self):
         '''Import the common log functions from the logger to the class'''
         log_funcs = ['debug', 'info', 'warning', 'error', 'critical',
@@ -208,14 +215,19 @@ class Log():
 
 if __name__ == '__main__':
     log = Log(cmdlevel='info',colorful = True)
+    err_log = Log('haha',cmdlevel='info',filename = 'log/tmp.log',backup_count = 1,when = 'D')
     # log = Log(cmdlevel='debug')
     log.set_logger(cmdlevel='debug')
-    log.debug('debug')
-    log.info('debug%s' % 'haha')
-    log.error((1,2))
-    log.error('debug')
-    log.info({'a':1,'b':2})
-    os.system("pause")
+    # log = log.addFileLog(err_log)
+    for i in range(100000):
+        log.debug('debug')
+        err_log.debug('debug')
+        log.info('debug%s' % 'haha')
+        err_log.info('info%s' % 'haha')
+        log.error((1,2))
+        log.error('debug')
+        log.info({'a':1,'b':2})
+        os.system("pause")
     class A():
         def __init__(self, log):
             self.log = log
